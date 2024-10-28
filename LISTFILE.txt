@@ -1,0 +1,59 @@
+001000        PRO      START   1000              11111111111111111111111111111111111111111111111111111111
+001000 001063 FIRST    LDA     TWO               123123
+001003 201063          MUL     TWO               
+001006 201063          MUL     TWO               
+001009 0C1069          STA     A                 
+              . A乘上2的3次方
+00100C 001066          LDA     THREE             
+00100F 201066          MUL     THREE             
+001012 0C106C          STA     B                 
+              . B乘上-3的2次方
+001015 001069          LDA     A                 
+001018 1C106C          SUB     B                 
+00101B 20105D THIS     MUL     ONE               
+00101E 281060          COMP    ZERO              
+001021 38101B          JLT     THIS              
+001024 0C106F          STA     C                 
+              . C=A-B 的絕對值   我先乘上-1 接著判斷是負數就JLT回去再乘上-1
+001027 001069          LDA     A                 
+00102A 0C1079          STA     TEMP              
+00102D 00106C          LDA     B                 
+001030 0C1069          STA     A                 
+001033 001079          LDA     TEMP              
+001036 0C106C          STA     B                 
+              . 交換 A,B
+001039 001069          LDA     A                 
+00103C 1C106C          SUB     B                 
+00103F 0C1072          STA     D                 
+              . D=A-B
+001042 00106F          LDA     C                 
+001045 1C1072          SUB     D                 
+001048 400001          AND     1                 
+              .        DIV     TWO
+              .        MUL     TWO
+              .        STA     TEMP
+              .        LDA     C
+              .        SUB     D
+              .        SUB     TEMP
+              . 上面取好餘數了 A暫存器裡面放的是餘數
+00104B 281060          COMP    ZERO              
+00104E 301057          JEQ     EVEN              
+001051 00107C          LDA     STR1              
+001054 3C105A          J       ST                
+001057 00107F EVEN     LDA     STR2              
+00105A 0C1075 ST       STA     G                 
+              . 這上面是 if else 判斷奇偶數
+              . 以下是宣告
+00105D fffFFF ONE      WORD    -1                
+001060 000000 ZERO     WORD    0                 
+001063 000002 TWO      WORD    2                 
+001066 fffFFD THREE    WORD    -3                
+001069        A        RESW    1                 
+00106C        B        RESW    1                 
+00106F        C        RESW    1                 
+001072        D        RESW    1                 
+001075        G        RESB    4                 
+001079        TEMP     RESW    1                 
+00107C 4F44   STR1     BYTE    C'ODD'            
+00107F 4556   STR2     BYTE    C'EVN'            
+001082                 END     FIRST             

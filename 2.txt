@@ -1,0 +1,59 @@
+PRO      START   1000             11111111111111111111111111111111111111111111111111111111
+FIRST    LDA     TWO              123123
+         MUL     TWO
+         MUL     TWO
+         STA     A
+. A乘上2的3次方
+         LDA     THREE
+         MUL     THREE
+         STA     B
+. B乘上-3的2次方
+         LDA     A
+         SUB     B
+THIS     MUL     ONE
+         COMP    ZERO
+         JLT     THIS
+         STA     C
+. C=A-B 的絕對值   我先乘上-1 接著判斷是負數就JLT回去再乘上-1
+         LDA     A
+         STA     TEMP
+         LDA     B
+         STA     A
+         LDA     TEMP
+         STA     B
+. 交換 A,B
+         LDA     A
+         SUB     B
+         STA     D
+. D=A-B
+         LDA     C
+         SUB     D
+         AND     1
+.        DIV     TWO
+.        MUL     TWO
+.        STA     TEMP
+.        LDA     C
+.        SUB     D
+.        SUB     TEMP
+. 上面取好餘數了 A暫存器裡面放的是餘數
+         COMP    ZERO
+         JEQ     EVEN
+         LDA     STR1
+         J       ST
+EVEN     LDA     STR2
+ST       STA     G
+. 這上面是 if else 判斷奇偶數
+. 以下是宣告
+ONE      WORD    -1
+ZERO     WORD    0
+TWO      WORD    2
+THREE    WORD    -3
+A        RESW    1
+B        RESW    1
+C        RESW    1
+D        RESW    1
+G        RESB    4
+TEMP     RESW    1
+STR1     BYTE    C'ODD'
+STR2     BYTE    C'EVN'
+         END     FIRST
